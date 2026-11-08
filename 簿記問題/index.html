@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>簿記練習問題</title>
+  <!-- このHTMLは 簿記問題/ 直下にあるので、css・js・img は同じ階層から辿る -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/story.css">
+  <link rel="stylesheet" href="css/panels.css">
+</head>
+
+<body>
+  <div id="orientation-lock" role="status" aria-live="polite">
+    <p>スマートフォンを横向きにしてください</p>
+  </div>
+
+  <!-- ① タイトル画面 -->
+  <section id="title-section">
+    <h1>簿記と彼女の戦い</h1>
+    <button id="start-btn" type="button">始める</button>
+    <button id="continue-btn" class="hidden" type="button">続きから</button>
+    <button id="how-to-play-btn" type="button">遊び方</button>
+    <button id="chart" type="button">勘定科目一覧</button>
+    <img id="titleProtagonist" src="img/主人公.png" alt="主人公">
+  </section>
+
+  <!-- 右上のボタン(音のON/OFF・メニュー) -->
+  <button id="sound-btn" type="button" aria-pressed="false" aria-label="効果音をオフにする">
+    <svg class="sound-icon" viewBox="0 0 48 32" aria-hidden="true" focusable="false">
+      <path class="sound-speaker" d="M4 12h8l10-8v24l-10-8H4z"></path>
+      <path class="sound-wave sound-wave-1" d="M28 10c3 3 3 9 0 12"></path>
+      <path class="sound-wave sound-wave-2" d="M34 6c6 6 6 14 0 20"></path>
+      <path class="sound-wave sound-wave-3" d="M40 2c9 9 9 19 0 28"></path>
+    </svg>
+  </button>
+  <button id="menu-btn" type="button" aria-label="メニューを開く" aria-controls="chapterMenu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- チャプターメニュー -->
+  <div id="chapterMenu" class="hidden">
+    <h2>チャプターを選択</h2>
+    <div id="chapterList"></div>
+    <button id="homeBtn" type="button">ホームに戻る</button>
+    <button id="closeBtn" type="button">閉じる</button>
+  </div>
+
+  <!-- 勘定科目一覧モーダル -->
+  <div id="chartModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="chartTitle">
+    <div id="chartContent">
+      <h2 id="chartTitle">勘定科目一覧表</h2>
+      <img src="img/勘定科目一覧.png" alt="勘定科目一覧表">
+      <button id="chartCloseBtn" type="button">閉じる</button>
+    </div>
+  </div>
+
+  <!-- デモ版終了モーダル -->
+  <div id="demoEndModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="demoEndTitle">
+    <div id="demoEndContent">
+      <h2 id="demoEndTitle">デモ版終了</h2>
+      <p>デモ版は終了です。プレイしていただき誠にありがとうございます！</p>
+      <button id="demoEndDismissBtn" type="button">閉じる</button>
+    </div>
+  </div>
+
+  <!-- ② ストーリー画面 -->
+  <div id="window" class="hidden">
+    <div id="storyControls" class="playback-controls" aria-label="ストーリー操作">
+      <button id="speedBtn" type="button" aria-pressed="true" aria-label="現在の再生モード：手動再生中">手動再生中</button>
+      <button id="pauseBtn" type="button" aria-pressed="false" aria-label="再生中。押すと一時停止します">再生中：一時停止</button>
+      <button id="skipStoryBtn" type="button">問題へ進む</button>
+    </div>
+    <img id="mainFairy" src="img/妖精.png" alt="妖精">
+    <img id="mainProtagonist" src="img/主人公.png" alt="主人公">
+    <img id="balanceSheet" src="img/貸借対照表.png" alt="貸借対照表">
+    <img id="simpleAccounts" src="img/勘定科目簡単なもの.png" alt="貸借対照表と損益計算書のイメージ図">
+    <img id="debitCreditExplanation" src="img/借方貸方説明.png" alt="借方と貸方の説明図">
+    <img id="accountingPeriod" src="img/会計期間.jpg" alt="会計期間のイメージ図">
+    <div id="name" class="name-tag"></div>
+    <div id="text"></div>
+  </div>
+
+  <!-- ③ 確認問題 -->
+  <section id="quizPanel" class="hidden" aria-label="確認問題">
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <div class="quiz-tab">問題</div>
+        <p id="quizProgress"></p>
+        <span id="quizCombo" class="quiz-combo" aria-live="polite"></span>
+      </div>
+      <div id="dopamineBanner" aria-live="polite"></div>
+      <p id="quizQuestion"></p>
+      <button id="quizHintButton" class="hidden" type="button">ヒント</button>
+      <p id="quizHint" aria-live="polite"></p>
+      <div id="quizChoices"></div>
+      <p id="quizResult" aria-live="polite"></p>
+      <button id="nextChapterBtn" class="hidden" type="button">次へ</button>
+    </div>
+  </section>
+
+  <!-- ④ 遊び方 -->
+  <section id="tutorialPanel" class="hidden" aria-labelledby="tutorialTitle">
+    <h2 id="tutorialTitle">遊び方</h2>
+    <div id="yousei">
+      <img src="img/妖精.png" alt="妖精">
+    </div>
+    <div id="haikei">
+      <img src="img/背景.png" alt="背景">
+    </div>
+
+    <div id="tutorialWindow">
+      <div id="tutorialControls" class="playback-controls" aria-label="遊び方の操作">
+        <button id="tutorialSpeedBtn" type="button" aria-pressed="true" aria-label="現在の再生モード：手動再生中">手動再生中</button>
+        <button id="tutorialPauseBtn" type="button" aria-pressed="false" aria-label="再生中。押すと一時停止します">再生中：一時停止</button>
+      </div>
+      <div id="tutorialName" class="name-tag"></div>
+      <div id="tutorialText"></div>
+    </div>
+
+    <div id="tutorialChoices" class="hidden"></div>
+    <p id="tutorialFeedback" aria-live="polite"></p>
+    <p id="tutorialGuide">画面をクリックして進む</p>
+    <button id="tutorialCloseBtn" class="hidden" type="button">ホームに戻る</button>
+  </section>
+
+  <!-- canvas-confetti / GSAP は演出用。ネットワークなしでもクイズ本体は動作する -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
+  <!-- 読み込み順が大事: data → core → effects → game → ui -->
+  <script src="js/data.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+
+</html>
