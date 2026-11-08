@@ -1,0 +1,164 @@
+/**
+ * story.css ― ストーリー画面(画面下の吹き出し・立ち絵)
+ */
+
+#window {
+  position: fixed;
+  right: var(--edge);
+  bottom: var(--edge);
+  left: var(--edge);
+  box-sizing: border-box;
+  display: flex;
+  min-height: clamp(150px, 30vh, 260px);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: clamp(16px, 2.4vw, 24px);
+  text-align: center;
+  background-color: transparent;
+}
+
+/* 吹き出しの黒い半透明の下地 */
+#window::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--overlay);
+  content: "";
+}
+
+#window #text {
+  position: relative;
+  z-index: 2;
+  margin: 16px 0 0;
+  padding: 0;
+  font-size: clamp(16px, 2.4vw, 24px);
+}
+
+/* 妖精の立ち絵: 妖精が話している行だけ表示する
+   ※ left / top / height は画像の見え方に合わせた手調整の値 */
+#mainFairy {
+  position: absolute;
+  z-index: 0;
+  top: -540px;
+  left: -210px;
+  display: none;
+  max-width: none;
+  height: 190vh;
+}
+
+#window.speaker-fairy #mainFairy {
+  display: block;
+}
+
+/* 主人公の立ち絵: 主人公が話している行だけ表示する */
+#mainProtagonist {
+  position: absolute;
+  z-index: 0;
+  top: -540px;
+  right: -300px;
+  display: none;
+  max-width: none;
+  height: 190vh;
+}
+
+#window.speaker-protagonist #mainProtagonist {
+  display: block;
+}
+
+#balanceSheet {
+  position: absolute;
+  top: -50vh;
+  left: 49%;
+  z-index: 1;
+  display: none;
+  width: min(35vw, 980px);
+  max-width: none;
+  transform: translateX(-54%);
+}
+
+#window.has-balance-sheet #balanceSheet {
+  display: block;
+}
+
+#simpleAccounts {
+  position: absolute;
+  top: clamp(-41vh, -300px, -180px);
+  left: 48%;
+  z-index: 1;
+  display: none;
+  width: 860px;
+  max-width: 100%;
+  max-height: min(39vh, 330px);
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.3));
+}
+
+#window.has-simple-accounts #simpleAccounts {
+  display: block;
+}
+
+#debitCreditExplanation {
+  position: absolute;
+  top: clamp(-41vh, -300px, -180px);
+  left: 53%;
+  z-index: 1;
+  display: none;
+  width: 800px;
+  max-width: 100%;
+  max-height: min(37vh, 300px);
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.3));
+}
+
+#window.has-debit-credit #debitCreditExplanation {
+  display: block;
+}
+
+#accountingPeriod {
+  position: absolute;
+  top: clamp(-42vh, -280px, -180px);
+  left: 50%;
+  z-index: 1;
+  display: none;
+  width: min(72vw, 760px);
+  max-width: 100%;
+  max-height: min(34vh, 300px);
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.22));
+}
+
+#window.has-accounting-period #accountingPeriod {
+  display: block;
+}
+
+/* 横向きで画面が低いとき */
+@media (orientation: landscape) and (max-height: 500px) {
+  #window #text {
+    margin-top: 10px;
+  }
+
+  #accountingPeriod {
+    top: -34vh;
+    width: min(62vw, 620px);
+    max-height: 24vh;
+  }
+
+  #simpleAccounts {
+    top: -34vh;
+    width: min(66vw, 660px);
+    max-height: 26vh;
+  }
+
+  #debitCreditExplanation {
+    top: -34vh;
+    width: min(62vw, 620px);
+    max-height: 24vh;
+  }
+}
